@@ -16,6 +16,8 @@ The repository is organized into the following main folders:
 This folder contains an R script `LRT_feature_counts.R`, used to perform differential gene expression analysis using the DESeq2 Likelihood Ratio Test (LRT) method. The LRT method helps identify genes that show significant changes in expression across different conditions. For a detailed explanation of the LRT method, please take a look at [this resource](https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html).
 
 #### 2. Proteomic_analysis
+The absolute quantification of proteins from raw mass spectrometry (MS) files were done using autoprot [this resource](https://github.com/biosustain/autoprot)
+
 This folder is further divided into two subfolders:
 - **mRNA-protein_correlation_analysis**: Contains scripts for performing correlation analysis between mRNA and protein abundance data.
 - **protein_abundance_allocation_analysis**: Includes scripts for performing differential protein abundance analysis and protein allocation analysis to assess how proteins are distributed across different cellular processes.
