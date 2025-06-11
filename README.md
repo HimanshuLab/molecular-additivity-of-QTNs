@@ -27,6 +27,16 @@ This folder contains:
 - `Build_iMAT.MAT`: A MATLAB file for generating context-specific metabolic models using the iMAT algorithm based on proteome data.
 - `jaccard index and optgp sampling.ipynb`: A Jupyter notebook for calculating the Jaccard index and performing OptGP sampling to analyze model similarity and metabolic flux distributions.
 
+### 4. Amino Acid Analysis
+This folder contains scripts for analyzing intracellular amino acid profiles in yeast strains:
+- **`Z_score_heatmap.R`**  
+  Generates a Z-score heatmap to cluster amino acids, using the MMTT strain as a reference for comparison across conditions.
+
+- **`selected_aminoacid_analysis.R`**  
+  Analyzes selected amino acids in the MMTT strain. Focuses on:
+  - Amino acids exhibiting a **biphasic trend**.
+  - Amino acids showing an **early surge** followed by a **sustained level** during the later phase of sporulation.
+
 ---
 
 
