@@ -33,7 +33,7 @@ This folder contains scripts for analyzing intracellular amino acid profiles in 
 - **`Z_score_heatmap.R`**  
   Generates a Z-score heatmap to cluster amino acids, using the MMTT strain as a reference for comparison across conditions.
 
-- **`selected_aminoacid_analysis.R`**  
+- **`trajectory_analysis.R`**  
   Analyzes selected amino acids in the MMTT strain. Focuses on:
   - Amino acids exhibiting a **biphasic trend**.
   - Amino acids showing an **early surge** followed by a **sustained level** during the later phase of sporulation.
