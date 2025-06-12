@@ -9,6 +9,7 @@ The repository is organized into the following main folders:
 1. **Temporal_transcriptomic_analysis**
 2. **Proteomic_analysis**
 3. **Metabolic_modeling**
+4. **Amino acid analysis**
 
 ### Description of Folders
 
