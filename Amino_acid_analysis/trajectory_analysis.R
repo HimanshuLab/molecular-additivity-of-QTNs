@@ -10,13 +10,9 @@ library(factoextra)
 
 # 1. Data Import and Preprocessing
 data <- read.csv("amino_acid_data.csv")
-
-# Fix column names and convert timepoint
 data <- data %>%
   rename_with(~gsub(" Results", "", .), ends_with("Results")) %>%
   mutate(Timepoint = ifelse(Timepoint == 230, 2.5, as.numeric(Timepoint)))
-
-# Convert to long format
 data_long <- data %>%
   pivot_longer(
     cols = c(GLYCINE:TRYPTOPHAN),
@@ -35,7 +31,6 @@ wide_data <- data_long %>%
   select(Strains, Timepoint, Replicates, AminoAcid, RelativeQuantification) %>%
   pivot_wider(names_from = AminoAcid, values_from = RelativeQuantification)
 
-# Keep metadata
 meta_cols <- wide_data %>% select(Strains, Timepoint, Replicates)
 
 # Z-score normalize across all samples for each amino acid
@@ -43,8 +38,6 @@ scaled_mat <- scale(wide_data %>% select(-Strains, -Timepoint, -Replicates))
 
 # Combine metadata and normalized matrix
 zscore_df <- cbind(meta_cols, as.data.frame(scaled_mat))
-
-# Convert back to long format
 data_long_z <- zscore_df %>%
   pivot_longer(
     cols = everything()[-(1:3)],
@@ -54,8 +47,6 @@ data_long_z <- zscore_df %>%
 
 # Define strain colors
 strain_colors <- c("S" = "#D55E00", "M" = "#0072B2", "T" = "#009E73", "MT" = "#CC79A7")
-
-# Convert timepoint to numeric
 data_long_z$Timepoint <- as.numeric(as.character(data_long_z$Timepoint))
 
 # Summary statistics
@@ -94,16 +85,15 @@ selected_aa_plot_data <- data_long_z %>%
   group_by(Strains, Timepoint, AminoAcid) %>%
   summarize(
     Mean = mean(RelativeQuantification),
-    SE = sd(RelativeQuantification) / sqrt(n()),
+    SD = sd(RelativeQuantification),
     .groups = "drop"
   )
-
 selected_aa_plot_data_utilized <- data_long_z %>%
   filter(AminoAcid %in% not_utilized_list) %>%
   group_by(Strains, Timepoint, AminoAcid) %>%
   summarize(
     Mean = mean(RelativeQuantification),
-    SE = sd(RelativeQuantification) / sqrt(n()),
+    SD = sd(RelativeQuantification),
     .groups = "drop"
   )
 
@@ -133,7 +123,7 @@ aa_colors <- c(
 p <- ggplot(selected_aa_plot_data, aes(x = Timepoint, y = Mean, color = AminoAcid, group = AminoAcid)) +
   geom_line(linewidth = 1) +
   geom_point(size = 1) +
-  geom_errorbar(aes(ymin = Mean - SE, ymax = Mean + SE), width = 0.15) +
+  geom_errorbar(aes(ymin = Mean - SD, ymax = Mean + SD), width = 0.15) +
   facet_wrap(~Strains, nrow = 2) +
   scale_color_manual(values = aa_colors) +
   labs(
@@ -156,7 +146,7 @@ p <- ggplot(selected_aa_plot_data, aes(x = Timepoint, y = Mean, color = AminoAci
 q <- ggplot(selected_aa_plot_data_utilized, aes(x = Timepoint, y = Mean, color = AminoAcid, group = AminoAcid)) +
   geom_line(linewidth = 1) +
   geom_point(size = 1) +
-  geom_errorbar(aes(ymin = Mean - SE, ymax = Mean + SE), width = 0.15) +
+  geom_errorbar(aes(ymin = Mean - SD, ymax = Mean + SD), width = 0.15) +
   facet_wrap(~Strains, nrow = 2) +
   scale_color_brewer(palette = "Dark2") +
   labs(
@@ -174,7 +164,7 @@ q <- ggplot(selected_aa_plot_data_utilized, aes(x = Timepoint, y = Mean, color =
     legend.text = element_text(size = 10),
     legend.position = "right"
   )
-
+p
 # Save plots
-ggsave("D:/mauscript2/revision/R_codes_data/figures/amino_acid_not_utilized.png", p, dpi = 600, width = 5, height = 4)
-ggsave("D:/mauscript2/revision/R_codes_data/figures/amino_acid_utilized.png", q, dpi = 600, width = 5, height = 4)
+ggsave("D:/mauscript2/revision/R_codes_data/figures/amino_acid_not_utilized_sd.png", p, dpi = 600, width = 5, height = 4)
+ggsave("D:/mauscript2/revision/R_codes_data/figures/amino_acid_utilized_sd.png", q, dpi = 600, width = 5, height = 4)
